@@ -20,6 +20,7 @@ public class ConnectionFactory {
                 if (con == null) {
                     try {
                         con = DriverManager.getConnection(URL);
+                        con.setAutoCommit(false);
                     } catch (SQLException e) {
                         System.err.println("Erro ao conectar no banco de dados: " + e.getMessage());
                         throw new RuntimeException(e);
