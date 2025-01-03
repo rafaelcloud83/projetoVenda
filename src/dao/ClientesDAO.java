@@ -84,4 +84,59 @@ public class ClientesDAO {
             return false;
         }
     }
+    
+    public Boolean alterarCliente(Clientes cliente) throws SQLException { 
+        System.out.println(cliente);
+        try {
+            String sql = "UPDATE tb_clientes SET nome = ?, cpf = ?, email = ?, celular = ?, cep = ?, "
+                    + "endereco = ?, numero = ?, complemento = ?, bairro = ?, cidade = ?, estado = ? "
+                    + "WHERE id = ?";
+            PreparedStatement pst = this.con.prepareStatement(sql);
+            pst.setString(1, cliente.getNome());
+            pst.setString(2, cliente.getCpf());
+            pst.setString(3, cliente.getEmail());
+            pst.setString(4, cliente.getCelular());
+            pst.setString(5, cliente.getCep());
+            pst.setString(6, cliente.getEndereco());
+            pst.setString(7, cliente.getNumero());
+            pst.setString(8, cliente.getComplemento());
+            pst.setString(9, cliente.getBairro());
+            pst.setString(10, cliente.getCidade());
+            pst.setString(11, cliente.getEstado());
+            pst.setInt(12, cliente.getId());
+            int retorno = pst.executeUpdate();
+            if (retorno == 1) {
+               this.con.commit();
+                return true;
+            } else {
+                this.con.rollback();
+                return false;
+            }
+        } catch (SQLException ex) {
+            System.err.println("Erro ao alterar cliente: " + ex.getMessage());
+            this.con.rollback();
+            return false;
+        }
+    }
+    
+    public Boolean excluirCliente(Clientes cliente) throws SQLException { 
+        System.out.println(cliente);
+        try {
+            String sql = "DELETE FROM tb_clientes WHERE id = ?";
+            PreparedStatement pst = this.con.prepareStatement(sql);
+            pst.setInt(1, cliente.getId());
+            int retorno = pst.executeUpdate();
+            if (retorno == 1) {
+               this.con.commit();
+                return true;
+            } else {
+                this.con.rollback();
+                return false;
+            }
+        } catch (SQLException ex) {
+            System.err.println("Erro ao excluir cliente: " + ex.getMessage());
+            this.con.rollback();
+            return false;
+        }
+    }
 }
