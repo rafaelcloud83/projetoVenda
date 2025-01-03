@@ -43,7 +43,6 @@ public class ClientesDAO {
                 cliente.setCidade(rs.getString("cidade"));
                 cliente.setEstado(rs.getString("estado"));
                 lista.add(cliente);
-                System.out.println("Lista Clientes - " + cliente);
             }
             return lista;
         } catch (SQLException e) {
@@ -52,7 +51,65 @@ public class ClientesDAO {
         }
     }
 
-    public Boolean cadastrarCliente(Clientes cliente) throws SQLException { 
+    public List<Clientes> buscarClientesPorNome(String nome) {
+        List<Clientes> lista = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM tb_clientes WHERE nome like ?";
+            PreparedStatement pst = this.con.prepareStatement(sql);
+            pst.setString(1, nome);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                Clientes cliente = new Clientes();
+                cliente.setId(rs.getInt("id"));
+                cliente.setNome(rs.getString("nome"));
+                cliente.setCpf(rs.getString("cpf"));
+                cliente.setEmail(rs.getString("email"));
+                cliente.setCelular(rs.getString("celular"));
+                cliente.setCep(rs.getString("cep"));
+                cliente.setEndereco(rs.getString("endereco"));
+                cliente.setNumero(rs.getString("numero"));
+                cliente.setComplemento(rs.getString("complemento"));
+                cliente.setBairro(rs.getString("bairro"));
+                cliente.setCidade(rs.getString("cidade"));
+                cliente.setEstado(rs.getString("estado"));
+                lista.add(cliente);
+            }
+            return lista;
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar clientes por nome: " + e.getMessage());
+            return lista;
+        }
+    }
+
+    public Clientes buscarClientePorCpf(String cpf) {
+        Clientes cliente = new Clientes();
+        try {
+            String sql = "SELECT * FROM tb_clientes WHERE cpf = ?";
+            PreparedStatement pst = this.con.prepareStatement(sql);
+            pst.setString(1, cpf);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                cliente.setId(rs.getInt("id"));
+                cliente.setNome(rs.getString("nome"));
+                cliente.setCpf(rs.getString("cpf"));
+                cliente.setEmail(rs.getString("email"));
+                cliente.setCelular(rs.getString("celular"));
+                cliente.setCep(rs.getString("cep"));
+                cliente.setEndereco(rs.getString("endereco"));
+                cliente.setNumero(rs.getString("numero"));
+                cliente.setComplemento(rs.getString("complemento"));
+                cliente.setBairro(rs.getString("bairro"));
+                cliente.setCidade(rs.getString("cidade"));
+                cliente.setEstado(rs.getString("estado"));
+            }
+            return cliente;
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar cliente por cpf: " + e.getMessage());
+            return cliente;
+        }
+    }
+
+    public Boolean cadastrarCliente(Clientes cliente) throws SQLException {
         System.out.println(cliente);
         try {
             String sql = "INSERT INTO tb_clientes (nome, cpf, email, celular, "
@@ -72,7 +129,7 @@ public class ClientesDAO {
             pst.setString(11, cliente.getEstado());
             int retorno = pst.executeUpdate();
             if (retorno == 1) {
-               this.con.commit();
+                this.con.commit();
                 return true;
             } else {
                 this.con.rollback();
@@ -84,8 +141,8 @@ public class ClientesDAO {
             return false;
         }
     }
-    
-    public Boolean alterarCliente(Clientes cliente) throws SQLException { 
+
+    public Boolean alterarCliente(Clientes cliente) throws SQLException {
         System.out.println(cliente);
         try {
             String sql = "UPDATE tb_clientes SET nome = ?, cpf = ?, email = ?, celular = ?, cep = ?, "
@@ -106,7 +163,7 @@ public class ClientesDAO {
             pst.setInt(12, cliente.getId());
             int retorno = pst.executeUpdate();
             if (retorno == 1) {
-               this.con.commit();
+                this.con.commit();
                 return true;
             } else {
                 this.con.rollback();
@@ -118,8 +175,8 @@ public class ClientesDAO {
             return false;
         }
     }
-    
-    public Boolean excluirCliente(Clientes cliente) throws SQLException { 
+
+    public Boolean excluirCliente(Clientes cliente) throws SQLException {
         System.out.println(cliente);
         try {
             String sql = "DELETE FROM tb_clientes WHERE id = ?";
@@ -127,7 +184,7 @@ public class ClientesDAO {
             pst.setInt(1, cliente.getId());
             int retorno = pst.executeUpdate();
             if (retorno == 1) {
-               this.con.commit();
+                this.con.commit();
                 return true;
             } else {
                 this.con.rollback();

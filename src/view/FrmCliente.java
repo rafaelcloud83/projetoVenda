@@ -41,7 +41,7 @@ public class FrmCliente extends javax.swing.JFrame {
         }
     }
 
-    private Boolean verificaCamposValidos(){
+    private Boolean verificaCamposValidos() {
         if (txtCelular.getText().equals("(  )      -    ")) {
             JOptionPane.showMessageDialog(null, "Campo celular é obrigatório!", "Atenção", 0);
             txtCelular.requestFocus();
@@ -69,10 +69,26 @@ public class FrmCliente extends javax.swing.JFrame {
         }
         return false;
     }
-    
+
+    private void controlarBotoes(Boolean status) {
+        btnSalvar.setEnabled(status);
+        btnEditar.setEnabled(!status);
+        btnExcluir.setEnabled(!status);
+        btnPesquisar.setEnabled(status);
+        txtCpf.setEditable(status);
+        txtCpf.requestFocus();
+    }
+
+    private void ativarBotoes(Boolean status) {
+        btnEditar.setVisible(status);
+        btnExcluir.setVisible(status);
+        btnSalvar.setVisible(status);
+        btnNovo.setVisible(status);
+    }
+
     public FrmCliente() {
         initComponents();
-        txtCpf.requestFocus();
+        controlarBotoes(true);
     }
 
     /**
@@ -91,6 +107,7 @@ public class FrmCliente extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         txtCodigo = new javax.swing.JTextField();
         txtCpf = new javax.swing.JFormattedTextField();
+        btnPesquisar = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         txtNome = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
@@ -112,7 +129,6 @@ public class FrmCliente extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
         cbxEstado = new javax.swing.JComboBox<>();
         jLabel15 = new javax.swing.JLabel();
-        btnPesquisar = new javax.swing.JButton();
         pnlConsulta = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
         txtPesquisa = new javax.swing.JTextField();
@@ -156,6 +172,11 @@ public class FrmCliente extends javax.swing.JFrame {
         );
 
         pnlAbas.setFont(new java.awt.Font("Fira Sans", 0, 18)); // NOI18N
+        pnlAbas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pnlAbasMouseClicked(evt);
+            }
+        });
 
         pnlDados.setBackground(new java.awt.Color(255, 255, 255));
         pnlDados.setName("pnlDados"); // NOI18N
@@ -172,6 +193,14 @@ public class FrmCliente extends javax.swing.JFrame {
             ex.printStackTrace();
         }
         txtCpf.setFont(new java.awt.Font("Fira Sans", 0, 18)); // NOI18N
+
+        btnPesquisar.setFont(new java.awt.Font("Fira Sans", 0, 18)); // NOI18N
+        btnPesquisar.setText("PESQUISAR");
+        btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisarActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Fira Sans", 0, 18)); // NOI18N
         jLabel3.setText("NOME:");
@@ -236,9 +265,6 @@ public class FrmCliente extends javax.swing.JFrame {
 
         jLabel15.setFont(new java.awt.Font("Fira Sans", 0, 18)); // NOI18N
         jLabel15.setText("CPF:");
-
-        btnPesquisar.setFont(new java.awt.Font("Fira Sans", 0, 18)); // NOI18N
-        btnPesquisar.setText("PESQUISAR");
 
         javax.swing.GroupLayout pnlDadosLayout = new javax.swing.GroupLayout(pnlDados);
         pnlDados.setLayout(pnlDadosLayout);
@@ -354,6 +380,11 @@ public class FrmCliente extends javax.swing.JFrame {
 
         txtPesquisa.setFont(new java.awt.Font("Fira Sans", 0, 18)); // NOI18N
         txtPesquisa.setName("txtPesquisa"); // NOI18N
+        txtPesquisa.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtPesquisaKeyReleased(evt);
+            }
+        });
 
         tblDados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -475,7 +506,7 @@ public class FrmCliente extends javax.swing.JFrame {
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         if (verificaCamposValidos()) {
-          return;
+            return;
         }
         Clientes cliente = new Clientes();
         cliente.setNome(txtNome.getText());
@@ -494,6 +525,7 @@ public class FrmCliente extends javax.swing.JFrame {
             if (dao.cadastrarCliente(cliente)) {
                 JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!", "Sucesso", 1);
                 Util.limpaTela(pnlDados);
+                controlarBotoes(true);
             } else {
                 JOptionPane.showMessageDialog(null, "Erro ao cadastrar!", "Atenção", 0);
             }
@@ -508,7 +540,7 @@ public class FrmCliente extends javax.swing.JFrame {
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         if (verificaCamposValidos()) {
-          return;
+            return;
         }
         Clientes cliente = new Clientes();
         cliente.setId(Integer.parseInt(txtCodigo.getText()));
@@ -528,6 +560,7 @@ public class FrmCliente extends javax.swing.JFrame {
             if (dao.alterarCliente(cliente)) {
                 JOptionPane.showMessageDialog(null, "Alterado com sucesso!", "Sucesso", 1);
                 Util.limpaTela(pnlDados);
+                controlarBotoes(true);
             } else {
                 JOptionPane.showMessageDialog(null, "Erro ao alterar!", "Atenção", 0);
             }
@@ -550,27 +583,97 @@ public class FrmCliente extends javax.swing.JFrame {
         txtBairro.setText(tblDados.getValueAt(tblDados.getSelectedRow(), 9).toString());
         txtCidade.setText(tblDados.getValueAt(tblDados.getSelectedRow(), 10).toString());
         cbxEstado.setSelectedItem(tblDados.getValueAt(tblDados.getSelectedRow(), 11).toString());
+        controlarBotoes(false);
+        ativarBotoes(true);
     }//GEN-LAST:event_tblDadosMouseClicked
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
         Util.limpaTela(pnlDados);
+        controlarBotoes(true);
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        Clientes cliente = new Clientes();
-        cliente.setId(Integer.parseInt(txtCodigo.getText()));
+        int op = JOptionPane.showConfirmDialog(null, "Deseja excluir o cliente?", "Atenção", JOptionPane.YES_NO_OPTION);
+        if (op == JOptionPane.YES_OPTION) {
+            Clientes cliente = new Clientes();
+            cliente.setId(Integer.parseInt(txtCodigo.getText()));
+            try {
+                ClientesDAO dao = new ClientesDAO();
+                if (dao.excluirCliente(cliente)) {
+                    JOptionPane.showMessageDialog(null, "Excluído com sucesso!", "Sucesso", 1);
+                    Util.limpaTela(pnlDados);
+                    controlarBotoes(true);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Erro ao excluir!", "Atenção", 0);
+                }
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Erro: " + ex.getMessage(), "Atenção", 0);
+            }
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void txtPesquisaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisaKeyReleased
         try {
+            String nome = "%" + txtPesquisa.getText() + "%";
             ClientesDAO dao = new ClientesDAO();
-            if (dao.excluirCliente(cliente)) {
-                JOptionPane.showMessageDialog(null, "Excluído com sucesso!", "Sucesso", 1);
-                Util.limpaTela(pnlDados);
-            } else {
-                JOptionPane.showMessageDialog(null, "Erro ao excluir!", "Atenção", 0);
+            List<Clientes> lista = dao.buscarClientesPorNome(nome);
+            DefaultTableModel dados = (DefaultTableModel) tblDados.getModel();
+            dados.setNumRows(0);
+            for (Clientes c : lista) {
+                dados.addRow(new Object[]{
+                    c.getId(),
+                    c.getNome(),
+                    c.getCpf(),
+                    c.getEmail(),
+                    c.getCelular(),
+                    c.getCep(),
+                    c.getEndereco(),
+                    c.getNumero(),
+                    c.getComplemento(),
+                    c.getBairro(),
+                    c.getCidade(),
+                    c.getEstado()
+                });
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Erro: " + ex.getMessage(), "Atenção", 0);
         }
-    }//GEN-LAST:event_btnExcluirActionPerformed
+    }//GEN-LAST:event_txtPesquisaKeyReleased
+
+    private void pnlAbasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlAbasMouseClicked
+        if (pnlAbas.getSelectedIndex() == 0) {
+            ativarBotoes(true);
+        } else {
+            ativarBotoes(false);
+        }
+    }//GEN-LAST:event_pnlAbasMouseClicked
+
+    private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
+        try {
+            ClientesDAO dao = new ClientesDAO();
+            Clientes cliente = dao.buscarClientePorCpf(txtCpf.getText());
+            if (cliente.getCpf() != null) {
+                txtCodigo.setText(String.valueOf(cliente.getId()));
+                txtNome.setText(cliente.getNome());
+                txtEmail.setText(cliente.getEmail());
+                txtCelular.setText(cliente.getCelular());
+                txtCep.setText(cliente.getCep());
+                txtEndereco.setText(cliente.getEndereco());
+                txtNumero.setText(cliente.getNumero());
+                txtBairro.setText(cliente.getBairro());
+                txtCidade.setText(cliente.getCidade());
+                txtComplemento.setText(cliente.getComplemento());
+                cbxEstado.setSelectedItem(cliente.getEstado());
+                controlarBotoes(false);
+            } else {
+                JOptionPane.showMessageDialog(null, "Não existe cliente com este CPF!", "Atenção", 0);
+                txtCpf.requestFocus();
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro: " + ex.getMessage(), "Atenção", 0);
+        }
+        
+    }//GEN-LAST:event_btnPesquisarActionPerformed
 
     /**
      * @param args the command line arguments
