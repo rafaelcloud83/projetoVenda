@@ -43,6 +43,25 @@ public class FrmCliente extends javax.swing.JFrame {
         }
     }
 
+    private void ajustaTamnhoColunaTabela() {
+        tblDados.setAutoResizeMode(tblDados.AUTO_RESIZE_OFF);
+        tblDados.getTableHeader().setFont(new java.awt.Font("Fira Sans", 1, 16));
+        tblDados.getTableHeader().repaint();
+        tblDados.setRowHeight(tblDados.getRowHeight() + 10);
+        tblDados.getColumnModel().getColumn(0).setPreferredWidth(70);//codigo
+        tblDados.getColumnModel().getColumn(1).setPreferredWidth(280);//nome
+        tblDados.getColumnModel().getColumn(2).setPreferredWidth(130);//cpf
+        tblDados.getColumnModel().getColumn(3).setPreferredWidth(280);//email
+        tblDados.getColumnModel().getColumn(4).setPreferredWidth(130);//celular
+        tblDados.getColumnModel().getColumn(5).setPreferredWidth(90);//cep
+        tblDados.getColumnModel().getColumn(6).setPreferredWidth(280);//endereço
+        tblDados.getColumnModel().getColumn(7).setPreferredWidth(60);//numero
+        tblDados.getColumnModel().getColumn(8).setPreferredWidth(150);//complemento
+        tblDados.getColumnModel().getColumn(9).setPreferredWidth(220);//bairro
+        tblDados.getColumnModel().getColumn(10).setPreferredWidth(220);//cidade
+        tblDados.getColumnModel().getColumn(11).setPreferredWidth(30);//uf
+    }
+
     private Boolean verificaCamposValidos() {
         if (txtCelular.getText().equals("(  )      -    ")) {
             JOptionPane.showMessageDialog(null, "Campo celular é obrigatório!", "Atenção", 0);
@@ -90,6 +109,7 @@ public class FrmCliente extends javax.swing.JFrame {
 
     public FrmCliente() {
         initComponents();
+        ajustaTamnhoColunaTabela();
         controlarBotoes(true);
     }
 
@@ -152,7 +172,7 @@ public class FrmCliente extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(0, 102, 204));
 
-        jLabel1.setFont(new java.awt.Font("Fira Sans", 1, 24)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Hack Nerd Font", 1, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Cadastro de Clientes");
 
@@ -173,7 +193,7 @@ public class FrmCliente extends javax.swing.JFrame {
                 .addContainerGap(28, Short.MAX_VALUE))
         );
 
-        pnlAbas.setFont(new java.awt.Font("Fira Sans", 0, 18)); // NOI18N
+        pnlAbas.setFont(new java.awt.Font("Fira Sans", 1, 18)); // NOI18N
         pnlAbas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 pnlAbasMouseClicked(evt);
@@ -197,7 +217,7 @@ public class FrmCliente extends javax.swing.JFrame {
         txtCpf.setFont(new java.awt.Font("Fira Sans", 0, 18)); // NOI18N
 
         btnPesquisar.setFont(new java.awt.Font("Fira Sans", 0, 18)); // NOI18N
-        btnPesquisar.setText("PESQUISAR");
+        btnPesquisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/buscar.png"))); // NOI18N
         btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnPesquisarActionPerformed(evt);
@@ -268,6 +288,7 @@ public class FrmCliente extends javax.swing.JFrame {
         jLabel13.setText("UF:");
 
         cbxEstado.setFont(new java.awt.Font("Fira Sans", 0, 18)); // NOI18N
+        cbxEstado.setMaximumRowCount(5);
         cbxEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO" }));
 
         jLabel15.setFont(new java.awt.Font("Fira Sans", 0, 18)); // NOI18N
@@ -330,20 +351,21 @@ public class FrmCliente extends javax.swing.JFrame {
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addContainerGap(114, Short.MAX_VALUE))
         );
         pnlDadosLayout.setVerticalGroup(
             pnlDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlDadosLayout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addGroup(pnlDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel15)
-                        .addComponent(txtCpf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnPesquisar))
-                    .addGroup(pnlDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel5)))
+                .addGap(25, 25, 25)
+                .addGroup(pnlDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(pnlDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnlDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel15)
+                            .addComponent(txtCpf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(pnlDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5)))
+                    .addComponent(btnPesquisar))
                 .addGap(18, 18, 18)
                 .addGroup(pnlDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -383,7 +405,7 @@ public class FrmCliente extends javax.swing.JFrame {
         pnlConsulta.setName("pnlConsulta"); // NOI18N
 
         jLabel16.setFont(new java.awt.Font("Fira Sans", 0, 18)); // NOI18N
-        jLabel16.setText("NOME:");
+        jLabel16.setText("NOME ou CPF:");
 
         txtPesquisa.setFont(new java.awt.Font("Fira Sans", 0, 18)); // NOI18N
         txtPesquisa.setName("txtPesquisa"); // NOI18N
@@ -393,6 +415,7 @@ public class FrmCliente extends javax.swing.JFrame {
             }
         });
 
+        tblDados.setFont(new java.awt.Font("Fira Sans", 1, 16)); // NOI18N
         tblDados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null, null, null, null, null},
@@ -424,7 +447,7 @@ public class FrmCliente extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(pnlConsultaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1288, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1342, Short.MAX_VALUE)
                 .addContainerGap())
         );
         pnlConsultaLayout.setVerticalGroup(
@@ -442,6 +465,7 @@ public class FrmCliente extends javax.swing.JFrame {
         pnlAbas.addTab("Consulta de Clientes", pnlConsulta);
 
         btnNovo.setFont(new java.awt.Font("Fira Sans", 0, 18)); // NOI18N
+        btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/novo.png"))); // NOI18N
         btnNovo.setText("NOVO");
         btnNovo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -450,6 +474,7 @@ public class FrmCliente extends javax.swing.JFrame {
         });
 
         btnSalvar.setFont(new java.awt.Font("Fira Sans", 0, 18)); // NOI18N
+        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salvar.png"))); // NOI18N
         btnSalvar.setText("SALVAR");
         btnSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -458,6 +483,7 @@ public class FrmCliente extends javax.swing.JFrame {
         });
 
         btnEditar.setFont(new java.awt.Font("Fira Sans", 0, 18)); // NOI18N
+        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editar.png"))); // NOI18N
         btnEditar.setText("EDITAR");
         btnEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -466,6 +492,7 @@ public class FrmCliente extends javax.swing.JFrame {
         });
 
         btnExcluir.setFont(new java.awt.Font("Fira Sans", 0, 18)); // NOI18N
+        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/excluir.png"))); // NOI18N
         btnExcluir.setText("EXCLUIR");
         btnExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -480,15 +507,15 @@ public class FrmCliente extends javax.swing.JFrame {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(pnlAbas)
             .addGroup(layout.createSequentialGroup()
-                .addGap(293, 293, 293)
-                .addComponent(btnNovo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(88, 88, 88)
+                .addGap(371, 371, 371)
+                .addComponent(btnNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(btnSalvar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(68, 68, 68)
+                .addGap(18, 18, 18)
                 .addComponent(btnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(80, 80, 80)
+                .addGap(18, 18, 18)
                 .addComponent(btnExcluir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(291, 291, 291))
+                .addGap(379, 379, 379))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -592,6 +619,7 @@ public class FrmCliente extends javax.swing.JFrame {
         cbxEstado.setSelectedItem(tblDados.getValueAt(tblDados.getSelectedRow(), 11).toString());
         controlarBotoes(false);
         ativarBotoes(true);
+        tblDados.clearSelection();
     }//GEN-LAST:event_tblDadosMouseClicked
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
@@ -620,30 +648,33 @@ public class FrmCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void txtPesquisaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisaKeyReleased
-        try {
-            String nome = "%" + txtPesquisa.getText() + "%";
-            ClientesDAO dao = new ClientesDAO();
-            List<Clientes> lista = dao.buscarClientesPorNome(nome);
-            DefaultTableModel dados = (DefaultTableModel) tblDados.getModel();
-            dados.setNumRows(0);
-            for (Clientes c : lista) {
-                dados.addRow(new Object[]{
-                    c.getId(),
-                    c.getNome(),
-                    c.getCpf(),
-                    c.getEmail(),
-                    c.getCelular(),
-                    c.getCep(),
-                    c.getEndereco(),
-                    c.getNumero(),
-                    c.getComplemento(),
-                    c.getBairro(),
-                    c.getCidade(),
-                    c.getEstado()
-                });
+        int tamanhoPesquisa = txtPesquisa.getText().length();
+        if (tamanhoPesquisa >= 2 || tamanhoPesquisa == 0) {
+            try {
+                String nomeCpf = "%" + txtPesquisa.getText() + "%";
+                ClientesDAO dao = new ClientesDAO();
+                List<Clientes> lista = dao.buscarClientesPorNomeOuCpf(nomeCpf);
+                DefaultTableModel dados = (DefaultTableModel) tblDados.getModel();
+                dados.setNumRows(0);
+                for (Clientes c : lista) {
+                    dados.addRow(new Object[]{
+                        c.getId(),
+                        c.getNome(),
+                        c.getCpf(),
+                        c.getEmail(),
+                        c.getCelular(),
+                        c.getCep(),
+                        c.getEndereco(),
+                        c.getNumero(),
+                        c.getComplemento(),
+                        c.getBairro(),
+                        c.getCidade(),
+                        c.getEstado()
+                    });
+                }
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Erro: " + ex.getMessage(), "Atenção", 0);
             }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro: " + ex.getMessage(), "Atenção", 0);
         }
     }//GEN-LAST:event_txtPesquisaKeyReleased
 

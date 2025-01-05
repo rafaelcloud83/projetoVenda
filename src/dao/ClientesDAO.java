@@ -51,12 +51,13 @@ public class ClientesDAO {
         }
     }
 
-    public List<Clientes> buscarClientesPorNome(String nome) {
+    public List<Clientes> buscarClientesPorNomeOuCpf(String nomeCpf) {
         List<Clientes> lista = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM tb_clientes WHERE nome like ?";
+            String sql = "SELECT * FROM tb_clientes WHERE (nome like ?) OR (cpf like ?) ";
             PreparedStatement pst = this.con.prepareStatement(sql);
-            pst.setString(1, nome);
+            pst.setString(1, nomeCpf);
+            pst.setString(2, nomeCpf);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 Clientes cliente = new Clientes();
