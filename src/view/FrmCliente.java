@@ -7,6 +7,8 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Clientes;
 import util.Util;
+import webService.ViaCep;
+import webService.ViaCepClient;
 
 /**
  *
@@ -231,6 +233,11 @@ public class FrmCliente extends javax.swing.JFrame {
             ex.printStackTrace();
         }
         txtCep.setFont(new java.awt.Font("Fira Sans", 0, 18)); // NOI18N
+        txtCep.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtCepFocusLost(evt);
+            }
+        });
 
         jLabel8.setFont(new java.awt.Font("Fira Sans", 0, 18)); // NOI18N
         jLabel8.setText("ENDEREÇO:");
@@ -666,14 +673,42 @@ public class FrmCliente extends javax.swing.JFrame {
                 cbxEstado.setSelectedItem(cliente.getEstado());
                 controlarBotoes(false);
             } else {
-                JOptionPane.showMessageDialog(null, "Não existe cliente com este CPF!", "Atenção", 0);
+                JOptionPane.showMessageDialog(null, "CPF não encontrado!", "Atenção", 0);
                 txtCpf.requestFocus();
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Erro: " + ex.getMessage(), "Atenção", 0);
         }
-        
     }//GEN-LAST:event_btnPesquisarActionPerformed
+
+    private void txtCepFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCepFocusLost
+        int tamanhoCep = txtCep.getText().trim().length();
+        if (tamanhoCep == 9) {
+            try {
+                ViaCepClient client = new ViaCepClient();
+                ViaCep viaCep = client.buscarCep(txtCep.getText());
+                if (viaCep.getCep() == null) {
+                    JOptionPane.showMessageDialog(null, "CEP não encontrado!", "Atenção", 0);
+                    txtCep.setValue("");
+                    txtCep.requestFocus();
+                } else {
+                    txtEndereco.setText(viaCep.getLogradouro());
+                    txtBairro.setText(viaCep.getBairro());
+                    txtCidade.setText(viaCep.getLocalidade());
+                    cbxEstado.setSelectedItem(viaCep.getUf());
+                    txtNumero.requestFocus();
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e.getMessage() + "", "Atenção", 0);
+                txtCep.setValue("");
+                txtCep.requestFocus();
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "O campo CEP deve conter 8 dígitos!", "Atenção", 0);
+            txtCep.setValue("");
+            txtCep.requestFocus();
+        }
+    }//GEN-LAST:event_txtCepFocusLost
 
     /**
      * @param args the command line arguments
